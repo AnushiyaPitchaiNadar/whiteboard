@@ -1,0 +1,6 @@
+@whiteboard_backend_HostAddress = http://localhost:5078
+
+GET {{whiteboard_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
