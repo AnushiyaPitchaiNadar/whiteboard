@@ -12,8 +12,8 @@ using whiteboard_backend.Auth;
 namespace whiteboard_backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240402133012_Course")]
-    partial class Course
+    [Migration("20240405192321_whiteboard")]
+    partial class whiteboard
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

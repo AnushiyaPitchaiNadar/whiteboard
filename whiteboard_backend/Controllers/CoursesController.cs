@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using whiteboard_backend.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace whiteboard_backend.Controllers
 {
@@ -86,6 +87,71 @@ namespace whiteboard_backend.Controllers
         }
 
         [HttpGet]
+        [Route("myCourses")]
+        [Authorize(Roles = UserRoles.STUDENT)]
+        public async Task<IActionResult> GetMyCourses()
+        {
+            var user = await _userManager.FindByEmailAsync(User.Identity.Name); // Get the ID of the currently authenticated student
+
+            var registeredCourses = await _context.StudentCourses
+                .Where(sc => sc.UserId == user.Id)
+                .Include(sc => sc.Course) // Include the Course data
+                .Select(sc => new CourseModel
+                {
+                    CourseId = sc.CourseId,
+                    CourseName = sc.Course.CourseName
+                })
+                .ToListAsync();
+
+            return Ok(registeredCourses);
+        }
+
+        [HttpGet]
+        [Route("myCourses/download")]
+        [Authorize(Roles = UserRoles.STUDENT)]
+        public async Task<IActionResult> DownloadMyCourses()
+        {
+            var user = await _userManager.FindByEmailAsync(User.Identity.Name); // Get the ID of the currently authenticated student
+
+            var registeredCourses = await _context.StudentCourses
+                .Where(sc => sc.UserId == user.Id)
+                .Include(sc => sc.Course) // Include the Course data
+                .Select(sc => new CourseModel
+                {
+                    CourseId = sc.CourseId,
+                    CourseName = sc.Course.CourseName
+                })
+                .ToListAsync();
+
+            var stream = new MemoryStream();
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            byte[] bytes;
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var worksheet = package.Workbook.Worksheets.Add("My Courses");
+                worksheet.Cells[1, 1].Value = "Course ID";
+                worksheet.Cells[1, 2].Value = "Course Name";
+
+                for (int i = 0; i < registeredCourses.Count; i++)
+                {
+                    worksheet.Cells[i + 2, 1].Value = registeredCourses[i].CourseId;
+                    worksheet.Cells[i + 2, 2].Value = registeredCourses[i].CourseName;
+                }
+
+                // AutoFit columns for all cells
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                bytes = await package.GetAsByteArrayAsync();
+            }
+            var file = new FileContentResult(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            file.FileDownloadName = "My Courses.xlsx";
+            return file;
+        }
+
+        [HttpGet]
         [Route("myCourseStudents")]
         [Authorize(Roles = UserRoles.PROFESSOR)]
         public async Task<IActionResult> GetMyCourseStudents()
@@ -105,6 +171,47 @@ namespace whiteboard_backend.Controllers
             }).ToList();
 
             return Ok(studentDetails);
+        }
+
+        [HttpGet]
+        [Route("myCourseStudents/download")]
+        [Authorize(Roles = UserRoles.PROFESSOR)]
+        public async Task<IActionResult> DownloadMyCourseStudents()
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(User.Identity.Name); // Get the ID of the currently authenticated professor
+
+            // Fetch students from the StudentCourse table for these courses
+            var studentCourses = await _context.StudentCourses
+                                               .Where(sc => sc.CourseId == user.Course)
+                                               .Include(sc => sc.User)
+                                               .ToListAsync();
+
+            var stream = new MemoryStream();
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            byte[] bytes;
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Students in " + user.Course);
+                worksheet.Cells[1, 1].Value = "Email";
+                worksheet.Cells[1, 2].Value = "Full Name";
+
+                for (int i = 0; i < studentCourses.Count; i++)
+                {
+                    worksheet.Cells[i + 2, 1].Value = studentCourses[i].User.Email;
+                    worksheet.Cells[i + 2, 2].Value = studentCourses[i].User.FullName;
+                }
+
+                // AutoFit columns for all cells
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                bytes = await package.GetAsByteArrayAsync();
+            }
+            var file = new FileContentResult(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            file.FileDownloadName = $"Students in {user.Course}.xlsx";
+            return file;
         }
 
 

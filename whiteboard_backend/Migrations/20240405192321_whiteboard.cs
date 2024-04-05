@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace whiteboard_backend.Migrations
 {
-    public partial class Course : Migration
+    public partial class whiteboard : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
