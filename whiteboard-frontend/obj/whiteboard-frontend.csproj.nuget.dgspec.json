@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Information Encoding Standards\\Final Project\\whiteboard_backend\\whiteboard-frontend\\whiteboard-frontend.csproj": {}
+    "D:\\Information Encoding Standards\\Final Project\\whiteboard-frontend\\whiteboard-frontend.csproj": {}
   },
   "projects": {
-    "D:\\Information Encoding Standards\\Final Project\\whiteboard_backend\\whiteboard-frontend\\whiteboard-frontend.csproj": {
+    "D:\\Information Encoding Standards\\Final Project\\whiteboard-frontend\\whiteboard-frontend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Information Encoding Standards\\Final Project\\whiteboard_backend\\whiteboard-frontend\\whiteboard-frontend.csproj",
+        "projectUniqueName": "D:\\Information Encoding Standards\\Final Project\\whiteboard-frontend\\whiteboard-frontend.csproj",
         "projectName": "whiteboard-frontend",
-        "projectPath": "D:\\Information Encoding Standards\\Final Project\\whiteboard_backend\\whiteboard-frontend\\whiteboard-frontend.csproj",
+        "projectPath": "D:\\Information Encoding Standards\\Final Project\\whiteboard-frontend\\whiteboard-frontend.csproj",
         "packagesPath": "C:\\Users\\anush\\.nuget\\packages\\",
-        "outputPath": "D:\\Information Encoding Standards\\Final Project\\whiteboard_backend\\whiteboard-frontend\\obj\\",
+        "outputPath": "D:\\Information Encoding Standards\\Final Project\\whiteboard-frontend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\anush\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,6 +39,28 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

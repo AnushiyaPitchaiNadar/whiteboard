@@ -1,22 +1,30 @@
-html {
-  font-size: 14px;
+.team-members-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem; /* Adjust the space between cards as needed */
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.card {
+    width: 18rem; /* Fixed width for all cards */
+    margin-bottom: 1rem; /* Space at the bottom of each card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow effect for depth */
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.card-img-top {
+    width: 100%; /* Ensure the image covers the card width */
+    height: auto; /* Maintain aspect ratio */
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.card-body {
+    padding: 1rem; /* Padding inside the card around the content */
 }
 
-body {
-  margin-bottom: 60px;
+.card-title {
+    margin-bottom: 0.5rem; /* Space below the card title */
+    font-size: 1.25rem; /* Title font size */
+}
+
+.card-text {
+    font-size: 1rem; /* Text font size */
 }
